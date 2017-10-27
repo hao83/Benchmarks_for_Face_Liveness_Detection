@@ -40,8 +40,7 @@ def vgg_face(split, mean, opt):
 
     pydata_params = dict(split=split, data_dir=opt.data_dir, 
                          batch_size=batch_size, mean=mean, 
-                         dataset=dataset_name, use_HSV=opt.use_HSV, 
-                         load_size=opt.load_size, crop_size=opt.crop_size)
+                         dataset=dataset_name, load_size=opt.load_size, crop_size=opt.crop_size)
     n.data, n.label = L.Python(module='faceData_layers', layer='FaceDataLayer', 
                                ntop=2, param_str=str(pydata_params))
 
@@ -90,6 +89,5 @@ def vgg_face(split, mean, opt):
     n.loss = L.SoftmaxWithLoss(n.fc9_face, n.label)
 
     # loss and accuracy layer
-    n.loss = L.SoftmaxWithLoss(n.fc_face2, n.label)
-    n.acc = L.Accuracy(n.fc_face2, n.label)
+    n.acc = L.Accuracy(n.fc9_face, n.label)
     return n.to_proto()

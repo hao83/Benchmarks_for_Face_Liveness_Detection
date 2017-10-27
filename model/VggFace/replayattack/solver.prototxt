@@ -1,0 +1,14 @@
+train_net: "../model/VggFace/replayattack/train.prototxt"
+base_lr: 9.99999993923e-09
+display: 20
+max_iter: 92854
+lr_policy: "step"
+gamma: 0.10000000149
+momentum: 0.899999976158
+weight_decay: 0.000500000023749
+stepsize: 5000
+snapshot: 2500
+snapshot_prefix: "../model/VggFace/replayattack/snapshots"
+solver_mode: GPU
+iter_size: 1
+type: "Adam"

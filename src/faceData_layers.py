@@ -1,12 +1,11 @@
 import caffe
 
+import os
 import numpy as np
 from PIL import Image
 import copy
 import random
 import cv2
-
-from util import HSVColor
 
 import pdb
 
@@ -72,19 +71,13 @@ class BatchLoader(object):
 		self.dataset    = params['dataset']
 		self.split      = params['split']
 		self.batch_size = params['batch_size']
-		self.use_HSV    = params['use_HSV']
 		self.load_size  = params['load_size']
 		self.crop_size  = params['crop_size']
 		self.mean = np.array(params['mean'])
 
-		if self.dataset == 'all':
-			# using all images
-			self.image_paths = open('{}/{}_{}_image_list.txt'.format(self.data_dir, 'all', self.split)).read().splitlines()
-			self.labels      = open('{}/{}_{}_label_list.txt'.format(self.data_dir, 'all', self.split)).read().splitlines()
-		else:
-			# using a specific dataset
-			self.image_paths = open('{}/{}/{}_{}_image_list.txt'.format(self.data_dir, self.dataset, self.dataset, self.split)).read().splitlines()
-			self.labels      = open('{}/{}/{}_{}_label_list.txt'.format(self.data_dir, self.dataset, self.dataset, self.split)).read().splitlines()			
+		# using a specific dataset
+		self.image_paths = open('{}/{}/{}_image_list.txt'.format(self.data_dir, self.dataset, self.split)).read().splitlines()
+		self.labels      = open('{}/{}/{}_label_list.txt'.format(self.data_dir, self.dataset, self.split)).read().splitlines()			
 
 		print 'Shuffling dataset before training...'
 		self._cur = 0 # index of current image
@@ -100,9 +93,7 @@ class BatchLoader(object):
 
 		#  im_PIL = Image.open(self.image_paths[self._cur])
 
-		im = cv2.imread(self.image_paths[self._cur]) # we switch to use OpenCV to load images
-		if self.use_HSV:
-			im = cv2.cvtColor(im, cv2.COLOR_BGR2HSV)
+		im = cv2.imread(os.path.join(self.data_dir, self.dataset, self.image_paths[self._cur])) # we switch to use OpenCV to load images
 
 		# data augmentation
 		im = self.data_augment(im)

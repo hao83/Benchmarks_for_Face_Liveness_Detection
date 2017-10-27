@@ -5,7 +5,7 @@ from SqueezeNet_model import squeeze_net
 def make_net(net_path, split, mean, opt):
     '''
     net_path: path for the prototxt file of the net
-    split: 'train' / 'val' / 'test'
+    split: 'train' / 'test'
     mean: channel mean for the datasets used   
     '''
     print "Writing prototxt file for train net..."
